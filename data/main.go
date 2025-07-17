@@ -131,6 +131,7 @@ func getLocale(locale string) string {
 	return "en"
 }
 
+// nolint
 func StatTranslationsJSON(locale string) string {
 	var gz, err = trs.ReadFile(fmt.Sprintf("trs/%s/stat_descriptions.json.gz", getLocale(locale)))
 	if err != nil {
@@ -140,6 +141,7 @@ func StatTranslationsJSON(locale string) string {
 	return string(unzipTo(gz))
 }
 
+// nolint
 func PassiveSkillStatTranslationsJSON(locale string) string {
 	var gz, err = trs.ReadFile(fmt.Sprintf("trs/%s/passive_skill_stat_descriptions.json.gz", getLocale(locale)))
 	if err != nil {
@@ -149,6 +151,7 @@ func PassiveSkillStatTranslationsJSON(locale string) string {
 	return string(unzipTo(gz))
 }
 
+// nolint
 func PassiveSkillAuraStatTranslationsJSON(locale string) string {
 	var gz, err = trs.ReadFile(fmt.Sprintf("trs/%s/passive_skill_aura_stat_descriptions.json.gz", getLocale(locale)))
 	if err != nil {
