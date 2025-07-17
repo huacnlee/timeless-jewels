@@ -471,15 +471,21 @@ export const openTrade = (
   jewel: number,
   conqueror: string,
   results: SearchWithSeed[],
-  region: 'global' | 'tencent' = 'global'
+  platform: string,
+  league: string
 ) => {
-  let urlStr = 'https://www.pathofexile.com/trade/search/Affliction';
-
-  if (region === 'tencent') {
-    urlStr = 'https://poe.game.qq.com/trade/search/Affliction';
+  if (!platform || typeof platform !== 'string') {
+    platform = 'PC';
   }
 
-  const url = new URL(urlStr);
+  if (!league || typeof league !== 'string') {
+    league = 'Standard';
+  }
+
+  const host = platform === 'Tencent' ? 'poe.game.qq.com' : 'www.pathofexile.com';
+  const isPC = platform === 'PC' || platform == 'Tencent';
+
+  const url = new URL(`https://${host}/trade/search${isPC ? '' : `/${platform.toLowerCase()}`}/${league}`);
   url.searchParams.set('q', JSON.stringify(constructQuery(jewel, conqueror, results)));
 
   console.log('opening trade', url);

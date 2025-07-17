@@ -117,6 +117,13 @@
     "Caspiro": "卡斯皮罗",
     "Trade": "交易",
     "Grouped": "分组",
-    "app_name": "永恒珠宝计算器"
+    "app_name": "永恒珠宝计算器",
+    "Standard": "永久",
+    "Hardcore": "永久(专家)",
+    "Mercenaries": "赛季",
+    "Solo Self-Found": "单人",
+    "Hardcore Mercenaries": "赛季(专家)",
+    "Ruthless Mercenaries": "赛季(无情)",
+    "HC Ruthless Mercenaries": "赛季(无情专家)"
   }
 }

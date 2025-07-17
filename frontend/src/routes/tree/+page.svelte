@@ -446,7 +446,11 @@
     },
     {
       value: 'Playstation',
-      label: 'Playstation'
+      label: 'PS'
+    },
+    {
+      value: 'Tencent',
+      label: '腾讯'
     }
   ];
 
@@ -458,7 +462,7 @@
   const getLeagues = async () => {
     const response = await fetch('https://api.poe.watch/leagues');
     const responseJson = await response.json();
-    leagues = responseJson.map((l: { name: string }) => ({ value: l.name, label: l.name }));
+    leagues = responseJson.map((l: { name: string }) => ({ value: l.name, label: $_(l.name) }));
     league = leagues.find((l) => l.value === localStorage.getItem('league')) || leagues[0];
   };
 
@@ -483,9 +487,9 @@
   {#if !collapsed}
     <div
       class="w-screen md:w-10/12 lg:w-2/3 xl:w-1/2 2xl:w-5/12 3xl:w-1/3 4xl:w-1/4 min-w-[820px] absolute top-0 left-0 bg-black/80 backdrop-blur-sm themed rounded-br-lg max-h-screen">
-      <div class="p-4 max-h-screen flex flex-col">
+      <div class="p-4 gap-3 max-h-screen flex flex-col">
         <div class="flex flex-row justify-between mb-2">
-          <div class="flex flex-row items-center">
+          <div class="flex flex-row gap-2 items-center">
             <button class="burger-menu mr-3" on:click={() => (collapsed = true)}>
               <div />
               <div />
@@ -503,21 +507,16 @@
             <div class="ml-4"><Locale /></div>
           </div>
           {#if searchResults}
-            <div class="flex flex-row gap-2">
+            <div class="flex flex-row flex-1 ml-3 gap-2">
               {#if results}
                 <Select items={leagues} bind:value={league} on:change={updateUrl} clearable={false} />
                 <Select items={platforms} bind:value={platform} on:change={updateUrl} clearable={false} />
                 <button
-                  class="p-1 px-3 bg-blue-500/40 bg-blue-500/70 rounded disabled:bg-blue-900/40 mr-2"
-                  on:click={() => openTrade(searchJewel, searchConqueror, searchResults.raw)}
+                  class="py-1 px-3 bg-blue-500/40 rounded disabled:bg-blue-900/40"
+                  on:click={() =>
+                    openTrade(searchJewel, searchConqueror, searchResults.raw, platform.value, league.value)}
                   disabled={!searchResults}>
-                  {$_('Trade')}
-                </button>
-                <button
-                  class="p-1 px-3 bg-red-500/40 hover:bg-red-500/70 rounded disabled:bg-red-900/40 mr-2"
-                  on:click={() => openTrade(searchJewel, searchConqueror, searchResults.raw, 'tencent')}
-                  disabled={!searchResults}>
-                  {$_('Trade')} CN
+                  Trade
                 </button>
                 <button
                   class="p-1 px-3 bg-blue-500/40 rounded disabled:bg-blue-900/40"
