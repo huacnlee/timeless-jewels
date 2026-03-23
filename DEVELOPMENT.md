@@ -2,10 +2,10 @@
 
 ## Update Game Assets to new version
 
-The `update_assets.sh` script is used to update the game assets to a new version. It is located in the `scripts` directory and can be run using the following command:
+The `scripts/update_assets.sh` script is used to update the game assets to a new version. It is located in the `scripts` directory and can be run using the following command:
 
 ```
-./update_assets.sh 3.26
+./scripts/update_assets.sh 3.26
 ```
 
 ## Startup Development Server

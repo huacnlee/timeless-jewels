@@ -17,27 +17,70 @@ h2 {
 }
 
 h3 {
-  @apply text-xl font-bold;
+  @apply text-base font-semibold;
 }
 
 .themed {
-  --background: #393939;
-  --list-background: #393939;
+  --background: #1a1a1a;
+  --list-background: #1a1a1a;
   --item-hover-bg: #c2410c;
   --item-is-active-bg: #696969;
   --border-focus-color: #c2410c;
   --input-color: #ffffff;
-  --border: #696969;
+  --border: 1px solid transparent;
+  --border-hover: 1px solid #696969;
+  --border-focused: 1px solid #c2410c;
+  --border-radius: 3px;
+  --height: 32px;
+  --font-size: 0.875rem;
+  --value-container-padding: 0 10px;
+  --chevron-color: #9ca3af;
+  --chevron-width: 14px;
+  --chevron-height: 14px;
+  --clear-icon-width: 12px;
+  --clear-icon-color: #9ca3af;
+  --clear-select-width: 28px;
+  --clear-select-height: 100%;
+  --indicators-right: 4px;
+  --placeholder-color: #6b7280;
 }
 
 input {
-  background: #393939;
-  height: 42px;
-  padding: 16px;
+  background: #1a1a1a;
+  height: 32px;
+  padding: 0 10px;
   width: 100%;
   border-radius: 3px;
+  font-size: 0.875rem;
+  border: 1px solid transparent;
+  outline: none;
+  transition: border-color 0.15s;
+
+  &:hover {
+    border-color: #696969;
+  }
+
+  &:focus {
+    border-color: #c2410c;
+  }
 }
 
-.burger-menu > div {
-  @apply w-5 h-0.5 bg-white my-1;
+select {
+  background: #1a1a1a;
+  height: 32px;
+  padding: 0 10px;
+  border-radius: 3px;
+  font-size: 0.875rem;
+  color: white;
+  outline: none;
+  border: 1px solid transparent;
+  transition: border-color 0.15s;
+
+  &:hover {
+    border-color: #696969;
+  }
+
+  &:focus {
+    border-color: #c2410c;
+  }
 }

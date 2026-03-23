@@ -385,87 +385,51 @@ const tradeStatNames: { [key: number]: { [key: string]: string } } = {
 };
 
 export const constructQuery = (jewel: number, conqueror: string, result: SearchWithSeed[]) => {
-  const max_filter_length = 45;
-  const max_filters = 4;
-  const max_query_length = max_filter_length * max_filters;
-  const final_query = [];
-  const stat = {
-    type: 'count',
-    value: { min: 1 },
-    filters: [],
-    disabled: false
-  };
+  const statId = tradeStatNames[jewel][conqueror];
+  const filters = result.map((r) => ({
+    id: statId,
+    value: { min: r.seed, max: r.seed }
+  }));
 
-  // single seed case
-  if (result.length == 1) {
-    for (const conq of Object.keys(tradeStatNames[jewel])) {
-      stat.filters.push({
-        id: tradeStatNames[jewel][conq],
-        value: {
-          min: result[0].seed,
-          max: result[0].seed
-        },
-        disabled: conq != conqueror
-      });
-    }
-
-    final_query.push(stat);
-    // too many results case
-  } else if (result.length > max_query_length) {
-    for (let i = 0; i < max_filters; i++) {
-      final_query.push({
-        type: 'count',
-        value: { min: 1 },
-        filters: [],
-        disabled: i != 0
-      });
-    }
-
-    for (const [i, r] of result.slice(0, max_query_length).entries()) {
-      const index = Math.floor(i / max_filter_length);
-
-      final_query[index].filters.push({
-        id: tradeStatNames[jewel][conqueror],
-        value: {
-          min: r.seed,
-          max: r.seed
-        }
-      });
-    }
-  } else {
-    for (const conq of Object.keys(tradeStatNames[jewel])) {
-      stat.disabled = conq != conqueror;
-
-      for (const r of result) {
-        stat.filters.push({
-          id: tradeStatNames[jewel][conq],
-          value: {
-            min: r.seed,
-            max: r.seed
+  // Single seed: include all conquerors so the trade site shows them as options
+  if (result.length === 1) {
+    return {
+      query: {
+        status: { option: 'online' },
+        stats: [
+          {
+            type: 'count',
+            value: { min: 1 },
+            filters: Object.keys(tradeStatNames[jewel]).map((conq) => ({
+              id: tradeStatNames[jewel][conq],
+              value: { min: result[0].seed, max: result[0].seed },
+              disabled: conq !== conqueror
+            })),
+            disabled: false
           }
-        });
-      }
-
-      if (stat.filters.length > max_filter_length) {
-        stat.filters = stat.filters.slice(0, max_filter_length);
-      }
-
-      final_query.push(stat);
-    }
+        ]
+      },
+      sort: { price: 'asc' }
+    };
   }
 
   return {
     query: {
-      status: {
-        option: 'online'
-      },
-      stats: final_query
+      status: { option: 'online' },
+      stats: [
+        {
+          type: 'count',
+          value: { min: 1 },
+          filters,
+          disabled: false
+        }
+      ]
     },
-    sort: {
-      price: 'asc'
-    }
+    sort: { price: 'asc' }
   };
 };
+
+export const TRADE_BATCH_SIZE = 10;
 
 export const openTrade = (
   jewel: number,
@@ -483,12 +447,12 @@ export const openTrade = (
   }
 
   const host = platform === 'Tencent' ? 'poe.game.qq.com' : 'www.pathofexile.com';
-  const isPC = platform === 'PC' || platform == 'Tencent';
+  const isPC = platform === 'PC' || platform === 'Tencent';
+  const platformPath = isPC ? '' : `/${platform.toLowerCase()}`;
 
-  const url = new URL(`https://${host}/trade/search${isPC ? '' : `/${platform.toLowerCase()}`}/${league}`);
+  const url = new URL(`https://${host}/trade/search${platformPath}/${league}`);
   url.searchParams.set('q', JSON.stringify(constructQuery(jewel, conqueror, results)));
 
-  console.log('opening trade', url);
-
-  window.open(url, '_blank');
+  console.log('opening trade', url.toString());
+  window.open(url.toString(), '_blank');
 };
