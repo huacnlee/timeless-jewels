@@ -880,7 +880,8 @@
             jewel={searchJewel}
             conqueror={searchConqueror}
             platform={platform.value}
-            league={league.value} />
+            league={league.value}
+            selectedSeed={seed} />
         {/if}
       </div>
     </div>
