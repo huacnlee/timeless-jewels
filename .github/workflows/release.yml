@@ -28,12 +28,13 @@ jobs:
           GOOS: js
           GOARCH: wasm
 
-      - name: Build frontend
+      - name: Build frontend for Cloudflare (root path)
         working-directory: frontend
         run: |
           bun install
           bun run build
-          ls -lah build
+        env:
+          BASE_PATH: ''
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
@@ -41,6 +42,12 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: fa820361b3084379f0646b645f81aa94
           command: pages deploy ./frontend/build --project-name=timeless-jewels-cn --branch=main
+
+      - name: Build frontend for GitHub Pages (/timeless-jewels)
+        working-directory: frontend
+        run: bun run build
+        env:
+          BASE_PATH: '/timeless-jewels'
 
       - uses: peaceiris/actions-gh-pages@v4
         with:
