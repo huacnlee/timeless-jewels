@@ -395,7 +395,7 @@ export const constructQuery = (jewel: number, conqueror: string, result: SearchW
   if (result.length === 1) {
     return {
       query: {
-        status: { option: 'online' },
+        status: { option: 'any' },
         stats: [
           {
             type: 'count',
@@ -415,7 +415,7 @@ export const constructQuery = (jewel: number, conqueror: string, result: SearchW
 
   return {
     query: {
-      status: { option: 'online' },
+      status: { option: 'any' },
       stats: [
         {
           type: 'count',
