@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - v*
+  workflow_dispatch:
 
 env:
   GO_VERSION: "1.21.0"
@@ -33,6 +34,13 @@ jobs:
           bun install
           bun run build
           ls -lah build
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: fa820361b3084379f0646b645f81aa94
+          command: pages deploy ./frontend/build --project-name=timeless-jewels-cn --branch=main
 
       - uses: peaceiris/actions-gh-pages@v4
         with:
