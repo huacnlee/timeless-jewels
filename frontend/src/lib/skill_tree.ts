@@ -253,7 +253,11 @@ export const formatStats = (translation: Translation, stat: number): string | un
   }
 
   if (selectedTranslation == -1) {
-    return undefined;
+    if (translation.list.length > 0) {
+      selectedTranslation = 0;
+    } else {
+      return undefined;
+    }
   }
 
   const datum = translation.list[selectedTranslation];
